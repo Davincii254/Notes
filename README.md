@@ -1,70 +1,118 @@
-# Getting Started with Create React App
+# Phase 2 Guided Project Guidelines
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This will be an Evernote-like application with React.
 
-## Available Scripts
 
-In the project directory, you can run:
+## Setup
 
-### `npm start`
+To get started, fork and clone this repository.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+The codebase is split up into a JSON Server API backend and a React frontend.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### Frontend
 
-### `npm test`
+To setup and run your frontend:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```console
+$ npm install
+$ npm start
+```
 
-### `npm run build`
+This React app will be running on `http://localhost:4000`.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Backend
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+First, set up your database by running:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```console
+$ npm run seed
+```
 
-### `npm run eject`
+This will seed some starter data for you in the `db/db.json` file. Any time you
+want to reset your database to its original state, just run `npm run seed` again
+to overwrite your data with some fresh seed data.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+To run `json-server`, run:
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```console
+$ npm run server
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+Your backend API will be running on `http://localhost:3000`.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### User ID
 
-## Learn More
+The seed file should create one user for you, so your default `userId` should
+be `1`. You can check the `db/db.json` file to make sure.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+#### Routes
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+| Method | Route        |                               Headers                               |        Body         |
+| ------ | ------------ | :-----------------------------------------------------------------: | :-----------------: |
+| GET    | `/users`     |                                                                     |                     |
+| GET    | `/notes`     |                                                                     |                     |
+| POST   | `/notes`     | `'Content-Type': 'application/json'`;`'Accept': 'application/json'` | title, body, userId |
+| PATCH  | `/notes/:id` | `'Content-Type': 'application/json'`;`'Accept': 'application/json'` | title, body, userId |
 
-### Code Splitting
+**Tips:**
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+- Test out your routes with [Postman](https://www.getpostman.com/) to see how
+  they work and what they return.
 
-### Analyzing the Bundle Size
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## Deliverables
 
-### Making a Progressive Web App
+Look at the gif below to see how the app should look and behave. 
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+### Viewing and Displaying Notes
 
-### Advanced Configuration
+- [ ] Display all notes in the left sidebar.
+- [ ] Displayed sidebar notes should show the title and a truncated body.
+- [ ] When a note from the sidebar is clicked, display its contents in the right
+      panel.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+![completed display notes](https://curriculum-content.s3.amazonaws.com/phase-2/react-hooks-evernote-json-server-guided-project/react-evernote-display.gif)
 
-### Deployment
+### Filtering Notes
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+- [ ] Implement the filter to search through your notes list by title.
 
-### `npm run build` fails to minify
+![completed filter notes](https://curriculum-content.s3.amazonaws.com/phase-2/react-hooks-evernote-json-server-guided-project/react-evernote-filter.gif)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+### Creating Notes
+
+- [ ] At the bottom of your left sidebar, show a `New` button.
+- [ ] Clicking `New` will create a new note via a `POST` request with some
+      default title and body. **NOTE**: You don't have to use any kind of `<form>`
+      element for this deliverable; you can create an object with a default title
+      and body text when the button is clicked. Make sure to check the
+      [Routes](#Routes) section of this README to determine what data you need in
+      the body of your request.
+- [ ] This new note should appear in the sidebar.
+
+![completed create notes](https://curriculum-content.s3.amazonaws.com/phase-2/react-hooks-evernote-json-server-guided-project/react-evernote-create.gif)
+
+### Editing Notes
+
+- [ ] When displaying a note in the right panel, show an `Edit` button.
+- [ ] Clicking the `Edit` button will allow the user to edit the title and body
+      in the right panel.
+- [ ] When in edit mode, also show a `Save` button which saves the note via a
+      `PATCH` request.
+- [ ] When in edit mode, also show a `Cancel` button which discards any changes
+      and reverts back to displaying the note.
+- [ ] Clicking a different note while in edit mode should discard your changes
+      and display the new note instead.
+
+![completed edit notes](https://curriculum-content.s3.amazonaws.com/phase-2/react-hooks-evernote-json-server-guided-project/react-evernote-edit.gif)
+
+## Goals
+
+- Add the ability to filter by body, date created, date edited, etc.
+- Sorting by date created, date edited, alphabetical, etc.
+- Use `react-router` to create a multi-page app
+- User signup & login
+- Sharing notes with other users
+- Rich text formatting
+- Tagging
+- Emailing notes
